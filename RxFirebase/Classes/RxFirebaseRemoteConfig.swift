@@ -16,10 +16,10 @@ public extension FIRRemoteConfig {
      @param expirationDuration  Duration that defines how long fetched config data is available, in seconds. When the config data expires, a new fetch is required.
      
     */
-    func rx_fetchWithExpirationDuration(expirationDuration: NSTimeInterval) -> Observable<FIRRemoteConfig> {
+    func rx_fetchWithExpirationDuration(expirationDuration: TimeInterval) -> Observable<FIRRemoteConfig> {
         return Observable.create { observer in
-            self.fetchWithExpirationDuration(expirationDuration) { (status, error) -> Void in
-                if (status == FIRRemoteConfigFetchStatus.Success) {
+            self.fetch(withExpirationDuration: expirationDuration) { (status, error) -> Void in
+                if (status == FIRRemoteConfigFetchStatus.success) {
                     self.activateFetched()
                     observer.onNext(self)
                     observer.onCompleted()
@@ -27,8 +27,7 @@ public extension FIRRemoteConfig {
                     observer.onError(error)
                 }
             }
-            
-            return NopDisposable.instance
+            return Disposables.create()
         }
     }
 }

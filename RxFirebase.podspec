@@ -33,7 +33,7 @@ This is a library to help you use RxSwift 2.5 or higher with Firebase 3.0 or hig
   s.source_files = 'RxFirebase/Classes/**/*'
 
     s.frameworks = 'UIKit'
-    s.dependency 'RxSwift', '~> 2.5'
+    s.dependency 'RxSwift', '~> 3.0.1'
     s.dependency 'Firebase/Database'
     s.dependency 'Firebase/Auth'
 

@@ -11,20 +11,22 @@ import FirebaseAuth
 import RxSwift
 
 public extension FIRAuth {
+    
     /**
      Registers for an "auth state did change" observable. Invoked when:
      - Registered as a listener
      - The current user changes, or,
      - The current user's access token changes.
      */
-    var rx_addAuthStateDidChangeListener: Observable<(FIRAuth, FIRUser?)> {
+    var rx_addAuthStateDidChangeListener: Observable <(FIRAuth, FIRUser?)> {
         get {
             return Observable.create { observer in
-                let listener = self.addAuthStateDidChangeListener({ (auth, user) in
+                let listener = self.addStateDidChangeListener({ (auth, user) in
                     observer.onNext((auth, user))
                 })
-                return AnonymousDisposable {
-                    self.removeAuthStateDidChangeListener(listener)
+    
+                return Disposables.create {
+                    self.removeStateDidChangeListener(listener)
                 }
             }
         }
@@ -38,7 +40,7 @@ public extension FIRAuth {
     func rx_signinWithEmail(email: String, password: String) -> Observable<FIRUser?> {
         return Observable.create { observer in
             
-            self.signInWithEmail(email, password: password, completion: { (user, error) in
+            self.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if let error = error {
                     observer.onError(error)
                 } else {
@@ -47,7 +49,7 @@ public extension FIRAuth {
                 }
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         }
     }
     
@@ -56,7 +58,7 @@ public extension FIRAuth {
     */
     func rx_signInAnonymously() -> Observable<FIRUser?> {
         return Observable.create { observer in
-            self.signInAnonymouslyWithCompletion({ (user, error) in
+            self.signInAnonymously(completion: { (user, error) in
                 if let error = error {
                     observer.onError(error)
                 } else {
@@ -65,7 +67,7 @@ public extension FIRAuth {
                 }
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         }
     }
     
@@ -75,7 +77,7 @@ public extension FIRAuth {
     */
     func rx_signInWithCredentials(credentials: FIRAuthCredential) -> Observable<FIRUser?> {
         return Observable.create { observer in
-            FIRAuth.auth()?.signInWithCredential(credentials, completion: { (user, error) in
+            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
                 if let error = error {
                     observer.onError(error)
                 } else {
@@ -84,7 +86,7 @@ public extension FIRAuth {
                 }
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         }
     }
     
@@ -94,7 +96,7 @@ public extension FIRAuth {
     */
     func rx_signInWithCustomToken(token: String) -> Observable<FIRUser?> {
         return Observable.create { observer in
-            self.signInWithCustomToken(token, completion: { (user, error) in
+            self.signIn(withCustomToken: token, completion: { (user, error) in
                 if let error = error {
                     observer.onError(error)
                 } else {
@@ -103,7 +105,7 @@ public extension FIRAuth {
                 }
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         }
     }
     
@@ -114,7 +116,7 @@ public extension FIRAuth {
     */
     func rx_createUserWithEmail(email: String, password: String) -> Observable<FIRUser?> {
         return Observable.create { observer in
-            self.createUserWithEmail(email, password: password, completion: { (user, error) in
+            self.createUser(withEmail: email, password: password, completion: { (user, error) in
                 if let error = error {
                     observer.onError(error)
                 } else {
@@ -123,7 +125,7 @@ public extension FIRAuth {
                 }
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         }
     }
     
