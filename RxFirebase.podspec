@@ -36,6 +36,7 @@ This is a library to help you use RxSwift 2.5 or higher with Firebase 3.0 or hig
     s.dependency 'RxSwift', '~> 3.0.1'
     s.dependency 'Firebase/Database'
     s.dependency 'Firebase/Auth'
+    s.dependency 'Firebase/Analytics'
 
     s.xcconfig = {
         "FRAMEWORK_SEARCH_PATHS" => "'$(PODS_ROOT)/FirebaseDatabase'"
